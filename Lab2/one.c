@@ -8,7 +8,7 @@ struct ListNode
     struct ListNode *next;
 };
 
-struct ListNode *start;
+struct ListNode *start = NULL;
 
 struct ListNode *createNode(int val)
 {
@@ -48,8 +48,10 @@ struct ListNode *insertEnd(struct ListNode *start, int val)
 
 void ListNode_Traverse(struct ListNode *start)
 {
+    // printf("start: %d",start);
     struct ListNode *current = start;
-    if(current==NULL){
+    if (current == NULL)
+    {
         printf("None");
         return;
     }
@@ -118,58 +120,63 @@ void ListNode_MainOps()
     struct ListNode *nextNode = current->next;
     while (current != NULL)
     {
-        printf("Previous: %d\n",previous->val);
-        printf("Current: %d\n",current->val);
+        // printf("Previous: %d\n", previous->val);
+        // printf("Current: %d\n", current->val);
+        nextNode = current->next;
         int ops_done = 0;
-        while (nextNode != NULL)
+        while ((nextNode != NULL) && (current->val == nextNode->val))
         {
-            printf("Next Node: %d\n",nextNode->val);
-            if (current->val == nextNode->val)
-            {
-                ops_done = 1;
-            }
-            else
-            {
-                break;
-            }
+            // printf("Next Node: %d\n", nextNode->val);
+            ops_done = 1;
             nextNode = nextNode->next;
-        }
-        if(ops_done)
-        {
-            if(current->val==start->val){
-                // printf("Start case\n");
-                start = nextNode;
-            }
-        }
-        if(nextNode==NULL){
-            break;
         }
         if (ops_done)
         {
-            
-            current->next = nextNode;
-            previous->next = nextNode;
-            if (current != NULL)
+            if (current->val == start->val)
             {
-                previous = current;
-                current = current->next;
-                // if(current!=NULL)
-                //     nextNode = current->next;
-            }
-            else
+                // printf("Start case\n");
+                start = nextNode;
+            }else
             {
-                break;
+                previous->next = nextNode;
             }
         }
         else
         {
             previous = current;
-            current = current->next;
-            // nextNode = current->next;
         }
-        nextNode = current->next;
+        
+        current = nextNode;
+        
+        // if (nextNode == NULL)
+        // {
+        //     break;
+        // }
+        // if (ops_done)
+        // {
+        //     current = nextNode;
+        //     previous->next = nextNode;
+        //     if (current != NULL)
+        //     {
+        //         previous = current;
+        //         current = current->next;
+        //         // if(current!=NULL)
+        //         //     nextNode = current->next;
+        //     }
+        //     else
+        //     {
+        //         break;
+        //     }
+        // }
+        // else
+        // {
+        //     previous = current;
+        //     current = current->next;
+        //     // nextNode = current->next;
+        // }
+        // nextNode = current->next;
 
-        printf("\n");
+        // printf("\n");
     }
 }
 
@@ -182,34 +189,54 @@ int main()
 {
     char temp[5];
     int char_count = 0;
-    while (1)
+    int user_int;
+    char user_char;
+    int total_count = 0;
+    while (scanf("%d%c",&user_int,&user_char)==2)
     {
-        char temp_char;
-        scanf("%c", &temp_char);
-        if ((int)temp_char == 32)
-        {
-            int temp_int = 0;
-            for (int i = char_count - 1; i >= 0; i--)
-            {
-                temp_int += char_to_int(temp[i]) * pow((double)10, (double)((char_count - 1) - i));
-            }
-            // printf("%d\n", temp_int);
-            start = insertEnd(start, temp_int);
-            char_count = 0;
-        }
-        else if ((int)temp_char == 69)
-        {
+        // printf("%d\n",user_int);
+        start = insertEnd(start, user_int);
+        total_count++;
+        if((int)user_char!=32){
             break;
         }
-        else
-        {
-            temp[char_count] = temp_char;
-            char_count++;
-        }
     }
+    // printf("after while\n");
+    if(total_count!=0)
+    {
+        ListNode_MainOps();
+        ListNode_Traverse(start);
+    }else
+    {
+        printf("None");
+    }
+    
+    // while (1)
+    // {
+    //     char temp_char;
+    //     scanf("%c", &temp_char);
+    //     if ((int)temp_char == 32)
+    //     {
+    //         int temp_int = 0;
+    //         for (int i = char_count - 1; i >= 0; i--)
+    //         {
+    //             temp_int += char_to_int(temp[i]) * pow((double)10, (double)((char_count - 1) - i));
+    //         }
+    //         // printf("%d\n", temp_int);
+    //         start = insertEnd(start, temp_int);
+    //         char_count = 0;
+    //     }
+    //     else if ((int)temp_char == 69)
+    //     {
+    //         break;
+    //     }
+    //     else
+    //     {
+    //         temp[char_count] = temp_char;
+    //         char_count++;
+    //     }
+    // }
     // printf("\nBefore Main Ops\n");
     // ListNode_Traverse(start);
-    ListNode_MainOps();
-    ListNode_Traverse(start);
     return 0;
 }
