@@ -46,6 +46,53 @@ struct ListNode *insertEnd(struct ListNode *start, int val)
     return start;
 }
 
+int main_ops(struct ListNode *startList,struct ListNode *endList,int len){
+    int ops_done = 0;
+    // struct ListNode *current = startList;
+    // while (current != NULL)
+    // {
+    //     printf("%d ", current->val);
+    //     current = current->next;
+    // }
+    // printf("\n");
+    // current = endList;
+    // while (current != NULL)
+    // {
+    //     printf("%d ", current->val);
+    //     current = current->next;
+    // }
+
+    struct ListNode *currentStart = startList;
+    struct ListNode *currentEnd = endList;
+    int counter = 0;
+    int limit = len / 2;
+    int loc = -1;
+    // printf("len %d : limit %d\n", len, limit);
+    while ( (currentStart!=NULL) && (counter<limit) )
+    {
+        // printf("%d : %d\n", currentStart->val,currentEnd->val);
+        if(currentStart->val!=currentEnd->val){
+            struct ListNode *next = currentStart->next;
+            // printf("Current: %d , Next: %d , Reverse: %d , Counter: %d\n", currentStart->val, next->val, currentEnd->val,counter);
+            if(currentStart->val==next->val){
+                if(counter==(limit-1) && counter%2==0)
+                {
+                    return counter;
+                }
+                loc = len-(counter+1);
+            }else
+            {
+                return counter;
+            }
+            
+        }
+        counter++;
+        currentStart = currentStart->next;
+        currentEnd = currentEnd->next;
+    }
+    return loc;
+}
+
 int main()
 {
     int user_int;
@@ -70,5 +117,14 @@ int main()
             break;
         }
     }
+    int result = main_ops(startEnd, startStart, total_count);
+    if(result!= -1){
+        printf("%d", result);
+    }
+    else
+    {
+        printf("None");
+    }
+    // printf("\nResult : %d\n", result);
     return 0;
 }
